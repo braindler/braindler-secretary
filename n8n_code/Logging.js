@@ -1,3 +1,6 @@
+/**
+ * Log request, response and errors.
+ */
 const request = $json.message;
 const response = $json.message;
 const error = $json.error;

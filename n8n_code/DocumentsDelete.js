@@ -1,4 +1,7 @@
 const { readDocuments, writeDocuments } = require('./DocumentsHelper.js');
+/**
+ * Delete document from documents.json.
+ */
 let documents = readDocuments();
 const query = $json.message;
 const documentToDelete = query.substring(8);

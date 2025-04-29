@@ -1,5 +1,8 @@
 const fs = require('fs');
 const filePath = 'ErrorLogs.json';
+/**
+ * Save all errors to ErrorLogs.json.
+ */
 let errors = [];
 try {
   const fileData = fs.readFileSync(filePath, 'utf-8');

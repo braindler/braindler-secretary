@@ -1,5 +1,9 @@
+// Get start time from context
+/**
+ * Collect all metrics and check alert cases.
+ */
 const startTime = $node['Metrics'].context.get('startTime') || Date.now();
-const endTime = Date.now();
+const endTime = Date.now(); 
 const processingTime = endTime - startTime;
 $node['Metrics'].context.set('startTime',Date.now());
 
@@ -57,8 +61,8 @@ if (consecutiveErrors >= maxConsecutiveErrors) {
 }
 
 return [{
-    json: {
-      message: $json.message
+    json: { 
+      message: $json.message 
     }
 }];
 

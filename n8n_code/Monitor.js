@@ -1,4 +1,7 @@
-// Get all metrics from context
+/**
+ * Sends all metrics data to monitoring system.
+ */
+ // Get all metrics from context
 const metrics = {
   processingTime: $node['Metrics'].json[0].message,
   requestCount: $node['Metrics'].context.get('requestCount'),

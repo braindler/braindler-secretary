@@ -1,3 +1,6 @@
+/**
+ * Log all KPI's
+ */
 const kpis = {
     processingTime: $node['Metrics'].json[0].message,
     requestCount: $node['Metrics'].context.get('requestCount'),
