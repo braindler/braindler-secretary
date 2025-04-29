@@ -1,0 +1,475 @@
+{
+  "name": "start.json",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id FROM users WHERE telegram_id = {{$json[\"message\"][\"from\"][\"id\"]}};",
+        "options": {}
+      },
+      "id": "a05e8ec4-7da6-4881-a2e3-3a8c5de4270d",
+      "name": "Check User",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        -400,
+        100
+      ],
+      "typeVersion": 2.4,
+      "credentials": {
+        "mySql": {
+          "id": "x219LayYyFolDwme",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fd7d97ab-e471-4c57-a2b7-3ccb467c8d77",
+              "leftValue": "={{$json.length}}",
+              "rightValue": "0",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "55ca0514-fc12-46b6-bd5d-0058e135ae81",
+      "name": "If New User?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -200,
+        100
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "id": "dedc1124-7bb6-48a9-b590-8ba8ad91076a",
+      "name": "Insert User (no ref)",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        0,
+        220
+      ],
+      "typeVersion": 2.4
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO users (\n  telegram_id,\n  username,\n  first_name,\n  last_name,\n  balance,\n  referrer_id\n)\nVALUES (\n  {{$json[\"telegram_id\"]}},\n  '{{$json[\"username\"] || \"\"}}',\n  '{{$json[\"first_name\"] || \"\"}}',\n  '{{$json[\"last_name\"] || \"\"}}',\n  100,\n  {{ $json.ref ? $json.ref : 'NULL' }}\n);",
+        "options": {}
+      },
+      "id": "69167d3a-e111-4151-a5ae-1d9572c79652",
+      "name": "Insert User (with ref)",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 2.4,
+      "credentials": {
+        "mySql": {
+          "id": "x219LayYyFolDwme",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "id": "8dc2e785-32de-4dfd-afba-18ae30eaa07a",
+      "name": "Update Referrer Balance",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        200,
+        0
+      ],
+      "typeVersion": 2.4
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "id": "c1be1dbd-db6a-416f-b66b-1555a2ef7d6f",
+      "name": "Log Referral (referrer)",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        400,
+        0
+      ],
+      "typeVersion": 2.4
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "id": "62de23fa-f8f4-4e7c-9fe4-10cdacde9619",
+      "name": "Log Referral (new user)",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        600,
+        0
+      ],
+      "typeVersion": 2.4
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "id": "e6dd43fa-0f39-41e9-81be-121f606cb4ef",
+      "name": "Get User Data",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        200,
+        300
+      ],
+      "typeVersion": 2.4
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "id": "197b1711-1a42-400c-bb21-0b31c2a962e2",
+      "name": "Count Devices",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        400,
+        300
+      ],
+      "typeVersion": 2.4
+    },
+    {
+      "parameters": {
+        "functionCode": "const balance = $node[\"Get User Data\"].first().json.balance;\nconst deviceCount = $node[\"Count Devices\"].first().json.deviceCount;\nlet daysText = \"\";\nif (deviceCount > 0) {\n  const days = Math.floor(balance * 30 / (100 * deviceCount));\n  daysText = `(~${days} дней)`;\n}\nconst firstName = $json[\"message\"][\"from\"][\"first_name\"] || \"пользователь\";\nlet greet = $node[\"Check User\"].json ? \"Рады видеть вас снова\" : \"Добро пожаловать\";\nreturn [{ json: { text: `${greet}, ${firstName}!\\nВаш баланс ${balance}₽ ${daysText}, аккаунт активен. Тариф 100₽/мес за 1 устройство, активно ${deviceCount} устройств.\\nЕсли вы потеряли настройки, нажмите 'Мои устройства'. Пригласите друзей – получите бонус 50₽ на баланс за каждого!` } }];"
+      },
+      "id": "6edfe621-42d1-40bd-a651-45ed85b9af8f",
+      "name": "Compose Welcome",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        600,
+        300
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -820,
+        120
+      ],
+      "id": "db4fbcb3-7bb6-4982-98d2-9307ab0f991a",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "🎉 Ваш друг принял приглашение, вам добавлено *50₽* на баланс!",
+        "additionalFields": {}
+      },
+      "id": "4dc88edf-34eb-42ec-8c41-efd65d02a6e6",
+      "name": "Send Friend Notification",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1180,
+        0
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "6e946434-be3a-4505-8523-1876c298dc58",
+      "credentials": {
+        "telegramApi": {
+          "id": "9hfs9gxsjeru7ML3",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "={{$node[\"Compose Welcome\"].json[\"text\"]}}",
+        "additionalFields": {}
+      },
+      "id": "6780c697-de76-4fc1-8999-f6221c56100a",
+      "name": "Send Welcome (no ref)",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        800,
+        300
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "6e946434-be3a-4505-8523-1876c298dc58",
+      "credentials": {
+        "telegramApi": {
+          "id": "9hfs9gxsjeru7ML3",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "={{$node[\"Compose Welcome\"].json[\"text\"]}}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "🚀 Подключить VPN 🚀",
+                    "additionalFields": {
+                      "callback_data": "start_apply"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "id": "06f4e8c2-d632-4158-8fcc-f1fa7fdebd3b",
+      "name": "Send Welcome (with ref)",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1000,
+        0
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "6e946434-be3a-4505-8523-1876c298dc58",
+      "credentials": {
+        "telegramApi": {
+          "id": "9hfs9gxsjeru7ML3",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "const firstName = $json.message.from.first_name || '';\nconst lastName = $json.message.from.last_name || '';\n\nconst fullName = `${firstName} ${lastName}`.trim();\nconst inviter = `${firstName} ${lastName}`.trim();\n\nconst text = `Привет, ${fullName}!\n\nВас пригласил сюда ${inviter}, поэтому вы можете бесплатно подключить VPN и получить 100₽ на балансе!\n\n💰 самая низкая цена на рынке!\n🚀 высокая скорость\n💃🏿 доступ ко всем сайтам\n💳 оплата картами РФ 🇷🇺 и СБП\n\nСтоимость 100₽/мес за 1 устройство, до 5 устройств.\n\n👫 Пригласите друзей в наш сервис и получите 50₽ на баланс за каждого друга. Ваши друзья получат 100₽ на баланс!\n\n⬇️ ⬇️  Жмите кнопку!  ⬇️ ⬇️`;\n\nreturn [{ json: { text } }];\n"
+      },
+      "id": "19823526-4dfe-4a73-9711-86b2d59a9984",
+      "name": "Compose Welcome (with ref)",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        800,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json[\"message\"][\"text\"]}}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "/start"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3dfc07b6-7d1f-4c30-857c-741439a5bf9b",
+                    "leftValue": "={{$json[\"callback_query\"][\"data\"]}}",
+                    "rightValue": "start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "start"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -620,
+        120
+      ],
+      "id": "7faa4dd8-3eec-43f4-986d-7f9214d1e76e",
+      "name": "Switch"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check User": {
+      "main": [
+        [
+          {
+            "node": "If New User?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If New User?": {
+      "main": [
+        [
+          {
+            "node": "Insert User (with ref)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert User (no ref)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Referral (new user)": {
+      "main": [
+        [
+          {
+            "node": "Compose Welcome (with ref)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Friend Notification": {
+      "main": [
+        []
+      ]
+    },
+    "Send Welcome (no ref)": {
+      "main": [
+        []
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Check User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Compose Welcome (with ref)": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome (with ref)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Welcome (with ref)": {
+      "main": [
+        [
+          {
+            "node": "Send Friend Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bbada11c-4ed6-4a61-a856-76befaebee10",
+  "meta": {
+    "instanceId": "56b859031753f55d9255666ae2857967070b959d969d365ded7558e71170585b"
+  },
+  "id": "w3lUqmSM8mC6WKJd",
+  "tags": []
+}
