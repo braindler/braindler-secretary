@@ -1,0 +1,19 @@
+name: braindler_assistant_admin
+description: Flutter Admin Panel for Braindler Assistant.
+version: 0.1.0
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.14.0
+  flutter_riverpod: ^2.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
