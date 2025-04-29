@@ -1,15 +1,8 @@
-const fs = require('fs');
-const filePath = 'documents.json';
-
-let documents = [];
-try {
-  const fileData = fs.readFileSync(filePath, 'utf-8');
-  documents = JSON.parse(fileData);
-} catch (err) {
-  console.error('Error reading file:', err);
-}
+const { readDocuments } = require('./DocumentsHelper.js');
+let documents = readDocuments();
 const query = $json.message;
 let searchResult = "";
+
 for (const document of documents) {
   if (document.includes(query)) {
     searchResult += document + "\n";
