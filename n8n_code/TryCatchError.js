@@ -1,9 +1,21 @@
+const fs = require('fs');
+
 /**
- * Return error message.
+ * Check if error in message.
  */
-return [{
-    json: {
-      message: "Ошибка, попробуйте позже",
-      error:$json.message
-    }
+function call($json){
+  const messageType = $json.message;
+  if(messageType === "error"){
+    console.log('ALERT: message is error');
+  }
+  return [{
+      json:{
+          message:"ok",
+          type:messageType
+      }
   }];
+}
+
+module.exports = {
+    call
+};

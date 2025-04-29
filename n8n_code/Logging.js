@@ -1,18 +1,20 @@
-/**
- * Log request, response and errors.
- */
-const request = $json.message;
-const response = $json.message;
-const error = $json.error;
+const fs = require('fs');
 
-console.log("Request:", request);
-console.log("Response:", response);
-if(error){
-  console.error("Error:", error);
+/**
+ * Write message in log file.
+ */
+function call($json){
+  const logMessage = $json.message;
+  fs.appendFile('log.txt', logMessage + '\n', (err) => {
+    if (err) throw err;
+  });
+  return [{
+      json:{
+          message:"ok"
+      }
+  }];
 }
 
-return [{
-    json: {
-      message: $json.message
-    }
-}];
+module.exports = {
+    call
+};

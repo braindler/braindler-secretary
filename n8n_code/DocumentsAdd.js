@@ -1,16 +1,18 @@
-const { readDocuments, writeDocuments } = require('./DocumentsHelper.js');
+const { addDocument } = require('./DocumentsHelper');
 
 /**
- * Add new document to documents.json.
+ * Add document to file.
  */
-let documents = readDocuments();
-const query = $json.message;
-const newDocument = query.substring(5);
-documents.push(newDocument);
-writeDocuments(documents);
+function call($json){
+  let result = addDocument($json.document);
 
-return [{
-  json: {
-      message: "document added"
-  }
-}];
+  return [{
+    json: {
+      message: result
+    }
+  }];
+}
+
+module.exports = {
+  call
+}

@@ -1,8 +1,21 @@
+const fs = require('fs');
+
 /**
- * Get text message and transform it to lower case.
+ * Check if the message is valid.
  */
-return [{
-    json: {
-      message: $json.message?.text?.toLowerCase() || $json.callback_query?.data?.toLowerCase()
+function call($json){
+  const messageType = $json.message;
+  if(!messageType){
+    console.log('Message is empty!');
+  }
+  return [{
+      json:{
+          message:"ok",
+          type:messageType
+      }
+  }];
+}
+
+module.exports = {
+    call
     }
-  }]

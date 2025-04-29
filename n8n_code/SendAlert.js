@@ -1,12 +1,19 @@
+const fs = require('fs');
+
 /**
- * Send alert to devops (simulation)
+ * Check if the message is valid.
  */
-const alert = $json.alert;
-if(alert){
-  console.log(`Send alert to devops about ${alert}`)
+function call($json){
+  const messageType = $json.message;
+  console.log('Sending alert', messageType);
+  return [{
+      json:{
+          message:"ok",
+          type:messageType
+      }
+  }];
 }
-return [{
-  json: {
-      message:"Alert was sent"
-  }
-}]
+
+module.exports = {
+    call
+}

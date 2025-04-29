@@ -1,11 +1,18 @@
-const { readDocuments } = require('./DocumentsHelper.js');
+const { readDocuments } = require('./DocumentsHelper');
+
 /**
- * List all documents from documents.json.
+ * Get list of documents
  */
-let documents = readDocuments();
-let searchResult = documents.join("\n");
-return [{
+function call($json){
+  let documents = readDocuments();
+
+  return [{
     json: {
-        message: searchResult === "" ? "no result" : searchResult
+      message: documents
     }
-}];
+  }];
+}
+
+module.exports = {
+  call
+};

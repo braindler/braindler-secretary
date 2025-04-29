@@ -1,23 +1,18 @@
-const { readDocuments, writeDocuments } = require('./DocumentsHelper.js');
+const { deleteDocument } = require('./DocumentsHelper');
+
 /**
- * Delete document from documents.json.
+ * Delete document from file.
  */
-let documents = readDocuments();
-const query = $json.message;
-const documentToDelete = query.substring(8);
-const index = documents.indexOf(documentToDelete);
-if (index > -1) {
-    documents.splice(index, 1);
-    writeDocuments(documents);
-    return [{
-      json: {
-          message: "document deleted"
-      }
-    }];
-} else{
+function call($json){
+  let result = deleteDocument($json.document);
+
   return [{
     json: {
-        message: "document not found"
+      message: result
     }
   }];
+}
+
+module.exports = {
+  call
 }

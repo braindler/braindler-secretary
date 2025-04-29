@@ -1,20 +1,14 @@
+const Metrics = require('./Metrics');
+
 /**
- * Sends all metrics data to monitoring system.
+ * Get data from metrics, and send it to the monitoring system.
  */
- // Get all metrics from context
-const metrics = {
-  processingTime: $node['Metrics'].json[0].message,
-  requestCount: $node['Metrics'].context.get('requestCount'),
-  successCount: $node['Metrics'].context.get('successCount'),
-  errorCount: $node['Metrics'].context.get('errorCount'),
-  avgProcessingTime: $node['Metrics'].context.get('totalProcessingTime') / $node['Metrics'].context.get('requestCount')
-};+
-// log metrics
+function call($json){
+  let metrics = Metrics.call($json);
+  console.log("Sending data to monitoring system:", metrics);
+  return metrics;
+}
 
-console.log("Sending data to monitoring system:", metrics);
-
-return [{
-  json: {
-    message:"ok"
-  }
-}]
+module.exports = {
+    call
+}
