@@ -1,0 +1,285 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [380, 120],
+      "id": "A"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Function to determine if the bot can answer based on incoming message and AISC state\n// Placeholder logic, replace with actual AISC interaction\nconst message = $json.text;\n\n// Assume a simple check for now\nif (message && message.startsWith('/')) {\n  // If it's a command, maybe bot can answer\n  return [{json: {canAnswer: true}}];\n} else {\n  // Otherwise, potentially needs human handoff\n  return [{json: {canAnswer: false}}];\n}"
+      },
+      "name": "Can Bot Answer?",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [600, 120],
+      "id": "B"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Placeholder node for processing with AISC script\n// This node should interact with the AISC module to get the scripted response\n// Input: Incoming message\n// Output: AISC response and a flag indicating deviation from script\n\n// Example output structure:\n// return [{\n//   json: {\n//     scriptedResponse: 'This is a scripted response.',\n//     deviation: false\n//   }\n// }];\n\nreturn [{json: {scriptedResponse: 'Default AISC scripted response.', deviation: false}}];"
+      },
+      "name": "Process with AISC Script",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [820, 40],
+      "id": "C"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Placeholder node for handing off to operator\n// This could trigger a notification or push the message to an operator queue\n// Input: Message that bot couldn't answer\n\nconsole.log(\"Message handed off to operator: \", $json.text);\n\nreturn $input.all();"
+      },
+      "name": "Hand off to Operator",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [820, 200],
+      "id": "D"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Placeholder node for receiving manual reply from operator\n// This node would likely be triggered by an external event (e.g., operator input in another system)\n// Input: Original message and operator's reply\n// Output: Operator's reply\n\n// Example input structure (hypothetical):\n// [{json: {originalMessage: '...', operatorReply: '...'}}]\n\nreturn $input.all();"
+      },
+      "name": "Receive Operator Reply",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1040, 200],
+      "id": "E"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Placeholder node to save operator reply in AISC database\n// This node should interact with the AISC module API to save the conversation turn\n// Input: Original message, operator reply\n\nconsole.log(\"Saving operator reply to AISC database.\");\n\nreturn $input.all();"
+      },
+      "name": "Save Operator Reply to AISC",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1260, 200],
+      "id": "F"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Placeholder node for AISC learning and scenario updates\n// This node represents the process where AISC learns from new data\n// Triggered after saving operator replies\n\nconsole.log(\"AISC learning and updating scenarios.\");\n\nreturn $input.all();"
+      },
+      "name": "AISC Learning/Update",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1480, 200],
+      "id": "G"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Placeholder node for AISC auto-generating new dialog branches\n// This node represents the process of expanding AISC capabilities\n// Triggered after learning\n\nconsole.log(\"AISC auto-generating new dialog branches.\");\n\nreturn $input.all();"
+      },
+      "name": "AISC Auto-Generate Branches",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1700, 200],
+      "id": "H"
+    },
+    {
+      "parameters": {
+        "conditions": [
+          {
+            "type": "json",
+            "property": "deviation",
+            "operation": "true",
+            "value": ""
+          }
+        ]
+      },
+      "name": "Deviation from Script?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1040, 40],
+      "id": "I"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Placeholder node for improvisation through AI\n// This node should interact with an AI model for generating improvised responses\n// Input: Incoming message, context, and indication of deviation\n// Output: AI generated improvisation\n\nconsole.log(\"Generating improvisation via AI.\");\n\nreturn [{json: {improvisedResponse: 'This is an AI improvised response.'}}];"
+      },
+      "name": "AI Improvisation",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1260, 40],
+      "id": "J"
+    },
+    {
+      "parameters": {
+        "message": "={{$json.scriptedResponse}}",
+        "chatId": "={{$json.message.chat.id}}"
+      },
+      "name": "Send Standard Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1260, 120],
+      "id": "K"
+    },
+    {
+      "parameters": {
+        "conditions": [
+          {
+            "type": "json",
+            "property": "needsOperatorReview",
+            "operation": "true",
+            "value": ""
+          }
+        ]
+      },
+      "name": "Operator Review Needed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1480, 40],
+      "id": "L"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Placeholder node for correction and saving in AISC after operator review\n// This node should interact with the AISC module API for incorporating operator corrections\n// Input: Original message, AI improvisation, operator correction (if any)\n\nconsole.log(\"Correcting and saving in AISC after operator review.\");\n\nreturn $input.all();"
+      },
+      "name": "Correct and Save to AISC",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1700, 40],
+      "id": "M"
+    },
+    {
+      "parameters": {
+        "message": "={{$json.improvisedResponse}}",
+        "chatId": "={{$json.message.chat.id}}"
+      },
+      "name": "Send AI Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1700, 120],
+      "id": "N"
+    },
+    {
+      "parameters": {
+        "message": "={{$json.operatorReply}}",
+        "chatId": "={{$json.message.chat.id}}"
+      },
+      "name": "Send Operator Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1480, 280],
+      "id": "E_telegram_send"
+    }
+  ],
+  "connections": [
+    {
+      "from": "A",
+      "to": "B",
+      "fromNode": "Telegram Trigger",
+      "toNode": "Can Bot Answer?"
+    },
+    {
+      "from": "B",
+      "to": "C",
+      "fromNode": "Can Bot Answer?",
+      "toNode": "Process with AISC Script",
+      "type": "main",
+      "index": 0
+    },
+    {
+      "from": "B",
+      "to": "D",
+      "fromNode": "Can Bot Answer?",
+      "toNode": "Hand off to Operator",
+      "type": "main",
+      "index": 1
+    },
+    {
+      "from": "C",
+      "to": "I",
+      "fromNode": "Process with AISC Script",
+      "toNode": "Deviation from Script?"
+    },
+    {
+      "from": "D",
+      "to": "E",
+      "fromNode": "Hand off to Operator",
+      "toNode": "Receive Operator Reply"
+    },
+    {
+      "from": "E",
+      "to": "F",
+      "fromNode": "Receive Operator Reply",
+      "toNode": "Save Operator Reply to AISC"
+    },
+    {
+      "from": "F",
+      "to": "G",
+      "fromNode": "Save Operator Reply to AISC",
+      "toNode": "AISC Learning/Update"
+    },
+    {
+      "from": "G",
+      "to": "H",
+      "fromNode": "AISC Learning/Update",
+      "toNode": "AISC Auto-Generate Branches"
+    },
+    {
+      "from": "H",
+      "to": "B",
+      "fromNode": "AISC Auto-Generate Branches",
+      "toNode": "Can Bot Answer?"
+    },
+    {
+      "from": "I",
+      "to": "J",
+      "fromNode": "Deviation from Script?",
+      "toNode": "AI Improvisation",
+      "type": "main",
+      "index": 0
+    },
+    {
+      "from": "I",
+      "to": "K",
+      "fromNode": "Deviation from Script?",
+      "toNode": "Send Standard Reply",
+      "type": "main",
+      "index": 1
+    },
+    {
+      "from": "J",
+      "to": "L",
+      "fromNode": "AI Improvisation",
+      "toNode": "Operator Review Needed?"
+    },
+    {
+      "from": "L",
+      "to": "M",
+      "fromNode": "Operator Review Needed?",
+      "toNode": "Correct and Save to AISC",
+      "type": "main",
+      "index": 0
+    },
+    {
+      "from": "L",
+      "to": "N",
+      "fromNode": "Operator Review Needed?",
+      "toNode": "Send AI Reply",
+      "type": "main",
+      "index": 1
+    },
+    {
+      "from": "M",
+      "to": "G",
+      "fromNode": "Correct and Save to AISC",
+      "toNode": "AISC Learning/Update"
+    },
+     {
+      "from": "E",
+      "to": "E_telegram_send",
+      "fromNode": "Receive Operator Reply",
+      "toNode": "Send Operator Reply"
+    }
+  ],
+  "active": false,
+  "settings": {},
+  "meta": {
+    "instanceId": "your-instance-id"
+  },
+  "name": "Braindler Secretary Telegram Bot"
+}
