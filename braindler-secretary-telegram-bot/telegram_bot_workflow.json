@@ -83,7 +83,7 @@
         "conditions": [
           {
             "type": "json",
-            "property": "deviation",
+            "property": "deviation",  
             "operation": "true",
             "value": ""
           }
@@ -121,7 +121,7 @@
         "conditions": [
           {
             "type": "json",
-            "property": "needsOperatorReview",
+            "property": "needsOperatorReview", 
             "operation": "true",
             "value": ""
           }
