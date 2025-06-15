@@ -74,10 +74,36 @@ Braindler Secretary is designed as a microservice system with separated responsi
 * **Vector Storage**: storage and search for similar messages and responses
 * **Telegram API**: user interaction through Telegram
 * **Python**: primary development language
+* **Flutter**: cross-platform UI framework for the workflow editor
+* **Riverpod**: state management for the Flutter editor
+* **HTTP**: API communication in the editor
 
 ## 📦 Installation (in development)
 
 > Details about launch, Docker images, and configuration will be added later.
+
+### Workflow Editor Setup
+
+The AICS (AI Chat Scripts) editor is built with Flutter and supports multiple platforms:
+
+1. **Prerequisites**:
+   - Flutter SDK (version 3.32.4 or higher)
+   - Dart SDK (version 3.8.1 or higher)
+   - Xcode (for macOS development)
+   - Android Studio (for Android development)
+
+2. **Running the Editor**:
+   ```bash
+   cd braindler-assistant-aics-editor
+   flutter pub get
+   flutter run
+   ```
+
+3. **Platform Support**:
+   - macOS (fully supported)
+   - Web (coming soon)
+   - Windows (coming soon)
+   - Linux (coming soon)
 
 ## 📁 Project Structure
 
@@ -97,12 +123,14 @@ braindler-Secretary/
 ## 💡 Development Plans
 
 - [x] Collection and transfer of all ideas from [braindler-legacy](https://gitlab.com/braindler-legacy)
+- [x] Visual scenario editor (Flutter-based)
 - [ ] Telegram MVP with AI scripts and improvisation
-- [ ] Visual scenario editor
 - [ ] Operator console with AI suggestions
 - [ ] Multilingual support
 - [ ] CRM and API integrations
 - [ ] SaaS version
+- [ ] Web version of the workflow editor
+- [ ] Cross-platform support for the editor (Windows, Linux)
 
 ---
 
