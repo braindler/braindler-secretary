@@ -1,120 +1,115 @@
 # 🧠 Braindler Secretary
 
-**Braindler Secretary** — интеллектуальный мультиязычный AI-секретарь для бизнес-коммуникаций с гибридным управлением (AI + Human-in-the-Loop).
+**Braindler Secretary** — an intelligent multilingual AI secretary for business communications with hybrid management (AI + Human-in-the-Loop).
 
 ---
 
-## 🚀 Описание проекта
+## 🚀 Project Description
 
-Braindler Secretary использует блочную структуру AI-чат-скриптов с возможностью импровизации и подключением оператора в реальном времени. Основной упор сделан на качество диалога и адаптацию под конкретные бизнес-процессы.
-human-in-the-loop и feedback-based learning
+Braindler Secretary uses a block-based AI chat script structure with improvisation capabilities and real-time operator connection. The main focus is on dialogue quality and adaptation to specific business processes.
 
 ---
 
-## 🚀 Основные возможности
+## 🚀 Key Features
 
-### 🤖 Интеллектуальная обработка сообщений
-- Автоматический анализ входящих запросов (может ли ответить самостоятельно)
-- Передача сложных вопросов оператору с контекстом
-- Обучение на ручных ответах для аналогичных запросов в будущем
+### 🤖 Intelligent Message Processing
+- Automatic analysis of incoming requests (can answer independently)
+- Transfer of complex questions to operators with context
+- Learning from manual responses for similar future requests
 
-### 🛠️ Функциональные особенности
-- **Мультиканальность**: Единая система для Telegram, WhatsApp, Line, WeChat, Instagram, ...
-- **Гибкие сценарии**: Блочные AI-чат-скрипты с ветвлениями и импровизацией
-- **Динамическое обучение**: Автогенерация новых диалоговых веток на основе истории
-- **Автоматический перевод**: Бесшовный перевод вопросов на язык оператора и ответов от оператора на язык пользователя
+### 🛠️ Functional Features
+- **Multi-channel**: Unified system for Telegram, WhatsApp, Line, WeChat, Instagram, ...
+- **Flexible Scenarios**: Block-based AI chat scripts with branching and improvisation
+- **Dynamic Learning**: Auto-generation of new dialogue branches based on history
+- **Automatic Translation**: Seamless translation of questions to operator's language and responses back to user's language
 
-### 🔌 Интеграции
-- Подключение CRM и внешних API
-- Триггерные рассылки и сбор аналитики
+### 🔌 Integrations
+- CRM and external API connections
+- Trigger-based broadcasts and analytics collection
 
 ```mermaid
 graph TD
-    A[Входящее сообщение в Telegram] --> B{Может ли бот ответить?}
-    B -- Да --> C[Бот отвечает по AISC-скрипту]
-    B -- Нет --> D[Сообщение передаётся оператору]
-    D --> E[Оператор отвечает вручную]
-    E --> F[Бот сохраняет ответ в AISC-базу]
-    F --> G[Обучение: AISC обновляет сценарии]
-    G --> H[Автогенерация новых веток диалога]
-    C --> I{Есть отклонение от скрипта?}
-    I -- Да --> J[Импровизация через AI]
-    I -- Нет --> K[Стандартный ответ]
-    J --> L[Проверка оператором?]
-    L -- Да --> M[Коррекция и сохранение в AISC]
-    L -- Нет --> N[Ответ отправляется]
+    A[Incoming Telegram Message] --> B{Can bot respond?}
+    B -- Yes --> C[Bot responds using AISC script]
+    B -- No --> D[Message forwarded to operator]
+    D --> E[Operator responds manually]
+    E --> F[Bot saves response to AISC database]
+    F --> G[Learning: AISC updates scenarios]
+    G --> H[Auto-generation of new dialogue branches]
+    C --> I{Script deviation?}
+    I -- Yes --> J[AI improvisation]
+    I -- No --> K[Standard response]
+    J --> L[Operator verification?]
+    L -- Yes --> M[Correction and AISC storage]
+    L -- No --> N[Response sent]
     H --> B
     M --> G
 ```
 
+## 🧩 Applications
 
-## 🧩 Применение
-
-- **Поддержка клиентов:** автоматизация FAQ и рутинных задач.
-- **Продажи:** квалификация лидов, сопровождение сделок, апселл.
-- **Маркетинг:** триггерные рассылки, опросы, генерация лидов.
-- **Обратная связь:** сбор отзывов, анализ потребностей клиентов.
-
----
-
-## 🏗️ Архитектура
-
-Braindler Secretary спроектирован как микросервисная система с разделением ответственности:
-
-- `core-engine`: ядро логики и генерации сообщений
-- `script-editor`: визуальный редактор сценариев
-- `integration-layer`: канальные шлюзы (Telegram, WhatsApp и др.)
-- `operator-console`: интерфейс оператора
-- `dialog-memory`: кратко- и долгосрочная память бота
-- `analytics`: подсистема анализа диалогов и дообучения модели
+- **Customer Support:** FAQ automation and routine tasks.
+- **Sales:** Lead qualification, deal management, upselling.
+- **Marketing:** Trigger-based broadcasts, surveys, lead generation.
+- **Feedback:** Review collection, customer needs analysis.
 
 ---
 
-## 🛠️ Технологии
+## 🏗️ Architecture
 
-* **Языковая модель**: использование LLM для обработки естественного языка.
-* **Векторное хранилище**: хранение и поиск похожих сообщений и ответов.
-* **Telegram API**: взаимодействие с пользователями через Telegram.
-* **Python**: основной язык разработки.
+Braindler Secretary is designed as a microservice system with separated responsibilities:
 
+- `core-engine`: core logic and message generation
+- `script-editor`: visual scenario editor
+- `integration-layer`: channel gateways (Telegram, WhatsApp, etc.)
+- `operator-console`: operator interface
+- `dialog-memory`: bot's short- and long-term memory
+- `analytics`: dialogue analysis and model retraining subsystem
 
-## 📦 Установка (в разработке)
+---
 
-> Подробности по запуску, Docker-образам и конфигурации будут добавлены позже.
+## 🛠️ Technologies
 
-## 📁 Структура проекта
+* **Language Model**: LLM usage for natural language processing
+* **Vector Storage**: storage and search for similar messages and responses
+* **Telegram API**: user interaction through Telegram
+* **Python**: primary development language
+
+## 📦 Installation (in development)
+
+> Details about launch, Docker images, and configuration will be added later.
+
+## 📁 Project Structure
 
 ```text
 braindler-Secretary/
-├── core/                   # ядро бота
-├── channels/               # интеграции с мессенджерами
-├── scripts/                # блоки сценариев и их редактор
-├── operator/               # консоль оператора
-├── plugins/                # внешние действия и API
-├── storage/                # база диалогов и аналитика
+├── core/                   # bot core
+├── channels/               # messenger integrations
+├── scripts/                # scenario blocks and editor
+├── operator/               # operator console
+├── plugins/                # external actions and APIs
+├── storage/                # dialogue database and analytics
 └── README.md
 ```
 
 ---
 
-## 💡 Планы развития
+## 💡 Development Plans
 
-- [x] Сбор и перенос всех идей из [braindler-legacy](https://gitlab.com/braindler-legacy)
-- [ ] MVP для Telegram с AI-скриптами и импровизацией
-- [ ] Визуальный редактор сценариев
-- [ ] Консоль оператора с AI-подсказками
-- [ ] Поддержка мультиязычности
-- [ ] Интеграции с CRM и API
-- [ ] SaaS-версия
+- [x] Collection and transfer of all ideas from [braindler-legacy](https://gitlab.com/braindler-legacy)
+- [ ] Telegram MVP with AI scripts and improvisation
+- [ ] Visual scenario editor
+- [ ] Operator console with AI suggestions
+- [ ] Multilingual support
+- [ ] CRM and API integrations
+- [ ] SaaS version
 
 ---
 
-## 🙏 Благодарности
+## 🙏 Acknowledgments
 
-Проект основан на опыте [Braindler Legacy](https://gitlab.com/braindler-legacy) и вдохновлён стремлением к идеальному пользовательскому опыту в общении между клиентами и бизнесом.
+The project is based on the experience of [Braindler Legacy](https://gitlab.com/braindler-legacy) and inspired by the pursuit of perfect user experience in business-client communication.
 
+## 📜 License
 
-## 📜 Лицензия
-
-extended GPLv3 — см. файл [LICENSE](./LICENSE)
-```
+extended GPLv3 — see [LICENSE](./LICENSE) file 
