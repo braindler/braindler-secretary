@@ -12,6 +12,9 @@ def load_config(config_path="config.json"):
     except json.JSONDecodeError:
         print(f"Error: Invalid JSON format in '{config_path}'.")
         return None
+    except PermissionError:
+        print(f"Error: Permission denied accessing '{config_path}'.")
+        return None
     except Exception as e:
         print(f"Error loading config: {e}")
         return None    
@@ -49,9 +52,12 @@ class DialogManager:
         if self.current_dialog_state is None:
             if message.lower().find("my name is") != -1:
                 name = message.split("my name is", 1)[1].strip()
-                self.dialog_state["name"] = name
-                self.current_dialog_state = "name_given"
-                response = self.translate('Nice to meet you', self.language)
+                if name:  # Проверяем, что имя не пустое
+                    self.dialog_state["name"] = name
+                    self.current_dialog_state = "name_given"
+                    response = self.translate('Nice to meet you', self.language)
+                else:
+                    response = self.fallback_response()
             elif message.lower().find('hello') != -1:
                 response = self.translate('Hello!', self.language)
             else:
@@ -62,6 +68,11 @@ class DialogManager:
                 self.current_dialog_state = None
             else:
                 response = self.fallback_response()
+        
+        # Fallback если response остался None
+        if response is None:
+            response = self.fallback_response()
+            
         return response
 
     
