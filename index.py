@@ -2,16 +2,18 @@ import json
 
 
 def load_config(config_path="config.json"):
-    
-    'Loads configuration from a JSON file.'
+    """Loads configuration from a JSON file."""
     try:
-        with open(config_path, "r") as f:
+        with open(config_path, "r", encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
-        print(f"Error: Configuration file \'{config_path}\' not found.")
+        print(f"Error: Configuration file '{config_path}' not found.")
         return None
     except json.JSONDecodeError:
-        print(f"Error: Invalid JSON format in \'{config_path}\'.")
+        print(f"Error: Invalid JSON format in '{config_path}'.")
+        return None
+    except Exception as e:
+        print(f"Error loading config: {e}")
         return None    
 
 class DialogManager:    
@@ -52,20 +54,14 @@ class DialogManager:
                 response = self.translate('Nice to meet you', self.language)
             elif message.lower().find('hello') != -1:
                 response = self.translate('Hello!', self.language)
-            
             else:
-                pass
+                response = self.fallback_response()
         elif self.current_dialog_state == "name_given":
             if "hello" in message.lower():                
                 response = "Ok"                
-                self.current_dialog_state = None                
-            pass
-        elif self.current_dialog_state == "name_given":
-            if "hello" in message.lower():                
-                response = "Ok"                
-                self.current_dialog_state = None                            
+                self.current_dialog_state = None
             else:
-                pass
+                response = self.fallback_response()
         return response
 
     

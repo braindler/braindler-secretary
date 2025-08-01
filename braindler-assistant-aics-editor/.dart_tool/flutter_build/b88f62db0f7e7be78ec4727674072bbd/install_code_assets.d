@@ -1,0 +1,1 @@
+ /Users/anton/proj/braindler-secretary/braindler-assistant-aics-editor/.dart_tool/flutter_build/b88f62db0f7e7be78ec4727674072bbd/native_assets.json: 

@@ -1,0 +1,1 @@
+@rpath/braindler_assistant_aics_editor.debug.dylib
