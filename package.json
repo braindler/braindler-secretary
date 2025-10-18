@@ -1,8 +1,26 @@
 {
+  "name": "braindler-secretary",
+  "version": "1.0.0",
+  "description": "AI Secretary Bot with multi-platform messaging integration",
+  "main": "index.py",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "python index.py",
+    "dev": "python index.py"
+  },
+  "dependencies": {
+    "aiohttp": "^3.9.0"
   },
   "devDependencies": {
     "jest": "^29.7.0"
-  }
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "ai",
+    "chatbot",
+    "messaging"
+  ],
+  "author": "Braindler",
+  "license": "MIT"
 }

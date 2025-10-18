@@ -1,3 +1,20 @@
 {
-  "telegram_bot_token": "your_random_telegram_bot_token"
+  "telegram_bot_token": "your_random_telegram_bot_token",
+  "whatsapp": {
+    "access_token": "your_whatsapp_access_token",
+    "phone_number_id": "your_phone_number_id",
+    "verify_token": "your_verify_token"
+  },
+  "line": {
+    "channel_access_token": "your_line_channel_access_token",
+    "channel_secret": "your_line_channel_secret"
+  },
+  "wechat": {
+    "app_id": "your_wechat_app_id",
+    "app_secret": "your_wechat_app_secret"
+  },
+  "instagram": {
+    "access_token": "your_instagram_access_token",
+    "user_id": "your_instagram_user_id"
+  }
 }

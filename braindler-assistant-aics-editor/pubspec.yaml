@@ -1,5 +1,6 @@
 name: braindler_assistant_aics_editor
 description: Flutter AICS visual editor for Braindler Assistant.
+license: NativeMindNONC
 version: 0.1.0
 
 environment:

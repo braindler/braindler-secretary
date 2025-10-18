@@ -1,5 +1,6 @@
 name: braindler_assistant_admin
 description: Flutter Admin Panel for Braindler Assistant.
+license: NativeMindNONC
 version: 0.1.0
 
 environment:
